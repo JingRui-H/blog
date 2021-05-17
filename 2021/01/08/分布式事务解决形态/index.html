@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>分布式事务解决形态 - 景瑞的博客</title><link rel="manifest" href="/blog/manifest.json"><meta name="application-name" content="景瑞的博客"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="景瑞的博客"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="这里说一下分布式事务概要和解决形态"><meta property="og:type" content="blog"><meta property="og:title" content="分布式事务解决形态"><meta property="og:url" content="http://jingruihe.gitee.io/blog/2021/01/08/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E8%A7%A3%E5%86%B3%E5%BD%A2%E6%80%81/"><meta property="og:site_name" content="景瑞的博客"><meta property="og:description" content="这里说一下分布式事务概要和解决形态"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://jingruihe.gitee.io/blog/img/og_image.png"><meta property="article:published_time" content="2021-01-07T16:00:00.000Z"><meta property="article:modified_time" content="2021-05-12T15:49:01.422Z"><meta property="article:author" content="JingRui"><meta property="article:tag" content="分布式事务"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/blog/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://jingruihe.gitee.io/blog/2021/01/08/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E8%A7%A3%E5%86%B3%E5%BD%A2%E6%80%81/"},"headline":"分布式事务解决形态","image":["http://jingruihe.gitee.io/blog/img/og_image.png"],"datePublished":"2021-01-07T16:00:00.000Z","dateModified":"2021-05-12T15:49:01.422Z","author":{"@type":"Person","name":"JingRui"},"description":"这里说一下分布式事务概要和解决形态"}</script><link rel="canonical" href="http://jingruihe.gitee.io/blog/2021/01/08/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E8%A7%A3%E5%86%B3%E5%BD%A2%E6%80%81/"><link rel="icon" href="/blog/img/favicon.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/blog/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><!--!--><!--!--><meta name="generator" content="Hexo 5.4.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/blog/"><img src="/blog/img/logo.svg" alt="景瑞的博客" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/blog/">主页</a><a class="navbar-item" href="/blog/archives">归档</a><a class="navbar-item" href="/blog/categories">分类</a><a class="navbar-item" href="/blog/tags">标签</a><a class="navbar-item" href="/blog/about">关于</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on Gitee" href="https://gitee.com/jingruihe"><i class="fab fa-github"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-6-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2021-01-07T16:00:00.000Z" title="2021/1/8上午12:00:00">2021-01-08</time>发表</span><span class="level-item"><time dateTime="2021-05-12T15:49:01.422Z" title="2021/5/12下午11:49:01">2021-05-12</time>更新</span><span class="level-item"><a class="link-muted" href="/blog/categories/%E5%90%8E%E5%8F%B0/">后台</a></span><span class="level-item">12 分钟读完 (大约1804个字)</span></div></div><h1 class="title is-3 is-size-4-mobile">分布式事务解决形态</h1><div class="content"><p>这里说一下分布式事务概要和解决形态</p>
+<span id="more"></span>
+
+<h1 id="分布式基本概念"><a href="#分布式基本概念" class="headerlink" title="分布式基本概念"></a>分布式基本概念</h1><h2 id="CAP"><a href="#CAP" class="headerlink" title="CAP"></a>CAP</h2><ul>
+<li>一致性（Consistency）</li>
+<li>可用性（Availability）</li>
+<li>分区容错性（Partition tolerance）</li>
+</ul>
+<h2 id="BASE理论"><a href="#BASE理论" class="headerlink" title="BASE理论"></a>BASE理论</h2><ul>
+<li>Basically Available（基本可用）： 比如高并发的时候让一部分请求直接降级处理</li>
+<li>Soft state（软状态）：允许系统中存在中间状态，不同节点的数据副本在数据同步的过程中存在延迟</li>
+<li>Eventually consistent（最终一致性）：数据副本在一段时间之后都可以达到一个最终同步的状态</li>
+</ul>
+<h1 id="分布式事务解决方案"><a href="#分布式事务解决方案" class="headerlink" title="分布式事务解决方案"></a>分布式事务解决方案</h1><h2 id="2pc"><a href="#2pc" class="headerlink" title="2pc"></a>2pc</h2><ol>
+<li>准备阶段：所有参与者准备执行锁住资源，向TM告诉自己准备好了</li>
+<li>提交阶段：所有参与者都说了准备好了，TM向所有参与者发送提交命令。</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>资源阻塞</li>
+<li>单点问题，如果协调者挂了就不知道事务怎么样了</li>
+<li>数据不一致，假设TM只通知到了部分会出现不一致</li>
+</ol>
+<h2 id="3pc"><a href="#3pc" class="headerlink" title="3pc"></a>3pc</h2><ol>
+<li>CanCommit：询问TM问参与者是否可以正常执行，然后参与者判断</li>
+<li>PreCommit：执行事务不提交</li>
+<li>DoCommit ：TM发送提交或者回滚操作，这时候参与者才会提交</li>
+</ol>
+<p>改进：</p>
+<ol>
+<li>参与者也有超时机制</li>
+<li>预提交解决了上面不一致问题</li>
+</ol>
+<p>基于XA协议DB层面实现</p>
+<h2 id="tcc"><a href="#tcc" class="headerlink" title="tcc"></a>tcc</h2><p>Try、Confirm、Cancel，3个方法均由业务编码实现</p>
+<p>注意事项：</p>
+<ol>
+<li>冥等性：confirm和cancel一定要保持冥等性，因为网络不稳定会重试</li>
+<li>空回滚：要判断好try有没有成功执行，如果try没有成功预留资源的话，cancel需要空回滚</li>
+<li>资源悬挂：try超时之后cancel空回滚，然后try执行成功，但是这时候事务的最终状态是结束，所以资源需要悬挂</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/dm_vincent/article/details/92432059">注意点详细可以看这篇文章</a></p>
+<p>这里面需要判断资源的最终状态咯爱处理2，3条异常</p>
+<h2 id="SAGA"><a href="#SAGA" class="headerlink" title="SAGA"></a>SAGA</h2><p>SAGA可以看做一个异步的、利用队列实现的补偿事务。</p>
+<p>其适用于无需马上返回业务发起方最终状态的场景，例如：你的请求已提交，请稍后查询或留意通知 之类。</p>
+<p>将上述补偿事务的场景用SAGA改写，其流程如下：</p>
+<ul>
+<li>订单服务创建最终状态未知的订单记录，并提交事务</li>
+<li>现金服务扣除所需的金额，并提交事务</li>
+<li>订单服务更新订单状态为成功，并提交事务</li>
+</ul>
+<p>以上为成功的流程，若现金服务扣除金额失败，那么，最后一步订单服务将会更新订单状态为失败。</p>
+<p>其业务编码工作量比补偿事务多一点，包括以下内容：</p>
+<ul>
+<li>订单服务创建初始订单的逻辑</li>
+<li>订单服务确认订单成功的逻辑</li>
+<li>订单服务确认订单失败的逻辑</li>
+<li>现金服务扣除现金的逻辑</li>
+<li>现金服务补偿返回现金的逻辑</li>
+</ul>
+<h2 id="lcn"><a href="#lcn" class="headerlink" title="lcn"></a>lcn</h2><p>LCN模式是通过代理Connection的方式实现对本地事务的操作，然后在由TxManager统一协调控制事务。当本地事务提交回滚或者关闭连接时将会执行假操作，该代理的连接将由LCN连接池管理。</p>
+<ol>
+<li>事务发起者会向TM创建事务组，执行本地业务，调用模块A</li>
+<li>模块A加入事务组，执行业务，假提交返回数据</li>
+<li>模块B加入事务组，执行业务，假提交返回数据</li>
+<li>事务发起者获得AB结果通知事务组，之后事务组内的所有模块会决定提交还是回滚，之后把提交和回滚的结果告诉事务组</li>
+<li>最终会返回给事务发起方</li>
+</ol>
+<h2 id="seata"><a href="#seata" class="headerlink" title="seata"></a>seata</h2><p>AT模式</p>
+<p>两阶段提交</p>
+<ol>
+<li>业务数据和回滚日志在记录在同一个本地事务中，释放本地锁和连接资源</li>
+<li>提交异步化，回滚通过一阶段回滚日志方向补偿</li>
+</ol>
+<ul>
+<li>Transaction Coordinator (TC)： 事务协调器，维护全局事务的运行状态，负责协调并驱动全局事务的提交或回滚。</li>
+<li>Transaction Manager (TM)： 控制全局事务的边界，负责开启一个全局事务，并最终发起全局提交或全局回滚的决议。</li>
+<li>Resource Manager (RM)： 控制分支事务，负责分支注册、状态汇报，并接收事务协调器的指令，驱动分支（本地）事务的提交和回滚。</li>
+</ul>
+<ol>
+<li>TM 向 TC 申请开启一个全局事务，全局事务创建成功并生成一个全局唯一的 XID。</li>
+<li>XID 在微服务调用链路的上下文中传播。</li>
+<li>RM向TC注册分支事务，接着执行这个分支事务并提交（这时候会生成回滚记录），最后将执行结果汇报给TC。</li>
+<li>TM 根据 TC 中所有的分支事务的执行情况，发起全局提交或回滚决议。</li>
+<li>TC 调度 XID 下管辖的全部分支事务完成提交或回滚请求。</li>
+</ol>
+<h2 id="消息事务"><a href="#消息事务" class="headerlink" title="消息事务"></a>消息事务</h2><p>柔性事务解决方案，最终一致性</p>
+<ul>
+<li>主动方投递消息<ol>
+<li>预发送消息, 状态待确认. </li>
+<li>返回消息存储成功的结果. 失败不执行业务操作, 成功执行业务操作.</li>
+<li>业务操作, 成功更新消息为待发送, 失败逻辑删除(更新状态为已回滚).</li>
+<li>注意: 3更新状态失败要抛出异常回滚事务, 不投递到mq中. 投递mq失败也要回滚. 2/3在同一个事务中</li>
+<li>状态为待发送就投递到mq中, 更新状态为已发送.</li>
+</ol>
+</li>
+<li>被动方接受消息<ol>
+<li>等待mq投递消息, 调用本地事务成功更新状态已完成. 失败一直重试, 设置重试次数, 超过人工处理. 注意冥等性</li>
+<li>注意: 需要定时任务去查询待确认状态, 回查待确认本地业务操作情况.</li>
+</ol>
+</li>
+</ul>
+<p>可以看看a2.rocketmq介绍.md</p>
+<p>优点： 通用性比较强，性能比较好</p>
+<h1 id="解决形态"><a href="#解决形态" class="headerlink" title="解决形态"></a>解决形态</h1><ul>
+<li>消息事务：适合提交和回滚只取决于发起方的业务需求，比如下订单之后加积分。都不需要编写反向的业务逻辑过程</li>
+<li>补偿事务：类似seata自动补偿的形式</li>
+<li>TCC事务：可以处理各种事务，但是业务入侵很强</li>
+<li>SAGA事务：适用于不需要同步返回发起方执行最终结果、可以进行补偿、对性能要求较高、不介意额外编码的业务场景</li>
+</ul>
+<p>感谢：</p>
+<p><a target="_blank" rel="noopener" href="https://www.sofastack.tech/blog/sofa-meetup-3-seata-retrospect/">https://www.sofastack.tech/blog/sofa-meetup-3-seata-retrospect/</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/skyesx/p/9697817.html">https://www.cnblogs.com/skyesx/p/9697817.html</a></p>
+</div><div class="article-licensing box"><div class="licensing-title"><p>分布式事务解决形态</p><p><a href="http://jingruihe.gitee.io/blog/2021/01/08/分布式事务解决形态/">http://jingruihe.gitee.io/blog/2021/01/08/分布式事务解决形态/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>JingRui</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2021-01-08</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2021-05-12</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a class="icon" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a><a class="icon" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/blog/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a></div><div class="notification is-danger">You need to set <code>install_url</code> to use ShareThis. Please set it in <code>_config.yml</code>.</div></article></div><div class="card"><div class="card-content"><h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3><div class="buttons is-centered"><a class="button donate" data-type="alipay"><span class="icon is-small"><i class="fab fa-alipay"></i></span><span>支付宝</span><span class="qrcode"><img src="/blog/img/zhifubaopay.png" alt="支付宝"></span></a><a class="button donate" data-type="wechat"><span class="icon is-small"><i class="fab fa-weixin"></i></span><span>微信</span><span class="qrcode"><img src="/blog/img/weixinpay.png" alt="微信"></span></a></div></div></div><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/blog/2021/01/10/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81-redis/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">redis分布式锁</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/blog/2020/05/03/mongodb-a2.%E9%9B%86%E7%BE%A4%E5%92%8C%E5%AE%89%E5%85%A8/"><span class="level-item">mongodb集群和安全</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">评论</h3><div class="notification is-danger">You forgot to set the <code>shortname</code> for Disqus. Please set it in <code>_config.yml</code>.</div></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/blog/img/avatar.png" alt="景瑞"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">景瑞</p><p class="is-size-6 is-block">花看半开，酒瘾微醺</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>深圳</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/blog/archives"><p class="title">74</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/blog/categories"><p class="title">1</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/blog/tags"><p class="title">19</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://weibo.com/u/5743551999" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Gitee" href="https://gitee.com/jingruihe"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Weibo" href="https://weibo.com/u/5743551999"><i class="fab fa-weibo"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="RSS" href="/blog/"><i class="fas fa-rss"></i></a></div></div></div><div class="card widget" data-type="links"><div class="card-content"><div class="menu"><h3 class="menu-label">链接</h3><ul class="menu-list"><li><a class="level is-mobile" href="https://0ne0ne.com" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">肉松饼</span></span><span class="level-right"><span class="level-item tag">0ne0ne.com</span></span></a></li><li><a class="level is-mobile" href="http://evilxyz.xyz/" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">神奇的胖子</span></span><span class="level-right"><span class="level-item tag">evilxyz.xyz</span></span></a></li></ul></div></div></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">分类</h3><ul class="menu-list"><li><a class="level is-mobile" href="/blog/categories/%E5%90%8E%E5%8F%B0/"><span class="level-start"><span class="level-item">后台</span></span><span class="level-end"><span class="level-item tag">74</span></span></a></li></ul></div></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">归档</h3><ul class="menu-list"><li><a class="level is-mobile" href="/blog/archives/2021/05/"><span class="level-start"><span class="level-item">五月 2021</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2021/04/"><span class="level-start"><span class="level-item">四月 2021</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2021/01/"><span class="level-start"><span class="level-item">一月 2021</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2020/05/"><span class="level-start"><span class="level-item">五月 2020</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2020/04/"><span class="level-start"><span class="level-item">四月 2020</span></span><span class="level-end"><span class="level-item tag">7</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2020/03/"><span class="level-start"><span class="level-item">三月 2020</span></span><span class="level-end"><span class="level-item tag">4</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2020/02/"><span class="level-start"><span class="level-item">二月 2020</span></span><span class="level-end"><span class="level-item tag">9</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2020/01/"><span class="level-start"><span class="level-item">一月 2020</span></span><span class="level-end"><span class="level-item tag">8</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2019/10/"><span class="level-start"><span class="level-item">十月 2019</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2019/04/"><span class="level-start"><span class="level-item">四月 2019</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2019/03/"><span class="level-start"><span class="level-item">三月 2019</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2019/01/"><span class="level-start"><span class="level-item">一月 2019</span></span><span class="level-end"><span class="level-item tag">4</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2018/02/"><span class="level-start"><span class="level-item">二月 2018</span></span><span class="level-end"><span class="level-item tag">9</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2018/01/"><span class="level-start"><span class="level-item">一月 2018</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2017/01/"><span class="level-start"><span class="level-item">一月 2017</span></span><span class="level-end"><span class="level-item tag">9</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2016/01/"><span class="level-start"><span class="level-item">一月 2016</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2015/03/"><span class="level-start"><span class="level-item">三月 2015</span></span><span class="level-end"><span class="level-item tag">7</span></span></a></li></ul></div></div></div><div class="card widget" data-type="subscribe-email"><div class="card-content"><div class="menu"><h3 class="menu-label">订阅更新</h3><form action="https://feedburner.google.com/fb/a/mailverify" method="post" target="popupwindow" onsubmit="window.open(&#039;https://feedburner.google.com/fb/a/mailverify?uri=&#039;,&#039;popupwindow&#039;,&#039;scrollbars=yes,width=550,height=520&#039;);return true"><input type="hidden" value="" name="uri"><input type="hidden" name="loc" value="en_US"><div class="field has-addons"><div class="control has-icons-left is-expanded"><input class="input" name="email" type="email" placeholder="Email"><span class="icon is-small is-left"><i class="fas fa-envelope"></i></span></div><div class="control"><input class="button" type="submit" value="订阅"></div></div></form></div></div></div><div class="column-right-shadow is-hidden-widescreen is-sticky"></div></div><div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3 is-sticky"><!--!--><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/blog/tags/JPA/"><span class="tag">JPA</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/JVM/"><span class="tag">JVM</span><span class="tag">6</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/docker/"><span class="tag">docker</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/elasticsearch/"><span class="tag">elasticsearch</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/mongodb/"><span class="tag">mongodb</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/mysql/"><span class="tag">mysql</span><span class="tag">12</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/redis/"><span class="tag">redis</span><span class="tag">9</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/spring/"><span class="tag">spring</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/springboot/"><span class="tag">springboot</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/zookeeper/"><span class="tag">zookeeper</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/"><span class="tag">分布式事务</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/"><span class="tag">分布式锁</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/%E5%B7%A5%E5%85%B7/"><span class="tag">工具</span><span class="tag">7</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/%E5%B9%B6%E5%8F%91/"><span class="tag">并发</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/"><span class="tag">消息队列</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/%E6%BA%90%E7%A0%81/"><span class="tag">源码</span><span class="tag">4</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/%E7%AE%97%E6%B3%95/"><span class="tag">算法</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"><span class="tag">解决方案</span><span class="tag">4</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"><span class="tag">设计模式</span><span class="tag">5</span></a></div></div></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2021-05-13T03:35:25.000Z">2021-05-13</time></p><p class="title"><a href="/blog/2021/05/13/mysql-A5.%E6%AD%BB%E9%94%81/">mysql-死锁</a></p><p class="categories"><a href="/blog/categories/%E5%90%8E%E5%8F%B0/">后台</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2021-05-09T03:35:25.000Z">2021-05-09</time></p><p class="title"><a href="/blog/2021/05/09/spring-6.aware/">springAware源码</a></p><p class="categories"><a href="/blog/categories/%E5%90%8E%E5%8F%B0/">后台</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2021-05-07T03:35:25.000Z">2021-05-07</time></p><p class="title"><a href="/blog/2021/05/07/spring-5.event/">spring-Event源码</a></p><p class="categories"><a href="/blog/categories/%E5%90%8E%E5%8F%B0/">后台</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2021-05-04T03:35:25.000Z">2021-05-04</time></p><p class="title"><a href="/blog/2021/05/04/spring-3.aop/">springAOP源码</a></p><p class="categories"><a href="/blog/categories/%E5%90%8E%E5%8F%B0/">后台</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2021-05-01T03:35:25.000Z">2021-05-01</time></p><p class="title"><a href="/blog/2021/05/01/spring-1.IOC/">springIOC源码</a></p><p class="categories"><a href="/blog/categories/%E5%90%8E%E5%8F%B0/">后台</a></p></div></article></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/blog/"><img src="/blog/img/logo.svg" alt="景瑞的博客" height="28"></a><p class="is-size-7"><span>&copy; 2021 JingRui</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on Gitee" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-CN");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/blog/js/column.js"></script><script src="/blog/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/blog/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/blog/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/blog/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/blog/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>

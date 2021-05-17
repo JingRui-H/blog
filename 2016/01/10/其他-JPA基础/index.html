@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>JPA基础 - 景瑞的博客</title><link rel="manifest" href="/blog/manifest.json"><meta name="application-name" content="景瑞的博客"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="景瑞的博客"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="新进了一家公司, 一进去发现里面用的SpringDataJpa. 虽然以前学过hibernate, 但是早就忘了, 还是赶紧学了起来. 感觉spring系列搭配起来感觉很好.开始吧!"><meta property="og:type" content="blog"><meta property="og:title" content="JPA基础"><meta property="og:url" content="http://jingruihe.gitee.io/blog/2016/01/10/%E5%85%B6%E4%BB%96-JPA%E5%9F%BA%E7%A1%80/"><meta property="og:site_name" content="景瑞的博客"><meta property="og:description" content="新进了一家公司, 一进去发现里面用的SpringDataJpa. 虽然以前学过hibernate, 但是早就忘了, 还是赶紧学了起来. 感觉spring系列搭配起来感觉很好.开始吧!"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://jingruihe.gitee.io/blog/img/og_image.png"><meta property="article:published_time" content="2016-01-09T16:00:00.000Z"><meta property="article:modified_time" content="2021-05-12T15:49:01.418Z"><meta property="article:author" content="JingRui"><meta property="article:tag" content="JPA"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/blog/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://jingruihe.gitee.io/blog/2016/01/10/%E5%85%B6%E4%BB%96-JPA%E5%9F%BA%E7%A1%80/"},"headline":"JPA基础","image":["http://jingruihe.gitee.io/blog/img/og_image.png"],"datePublished":"2016-01-09T16:00:00.000Z","dateModified":"2021-05-12T15:49:01.418Z","author":{"@type":"Person","name":"JingRui"},"description":"新进了一家公司, 一进去发现里面用的SpringDataJpa. 虽然以前学过hibernate, 但是早就忘了, 还是赶紧学了起来. 感觉spring系列搭配起来感觉很好.开始吧!"}</script><link rel="canonical" href="http://jingruihe.gitee.io/blog/2016/01/10/%E5%85%B6%E4%BB%96-JPA%E5%9F%BA%E7%A1%80/"><link rel="icon" href="/blog/img/favicon.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/blog/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><!--!--><!--!--><meta name="generator" content="Hexo 5.4.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/blog/"><img src="/blog/img/logo.svg" alt="景瑞的博客" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/blog/">主页</a><a class="navbar-item" href="/blog/archives">归档</a><a class="navbar-item" href="/blog/categories">分类</a><a class="navbar-item" href="/blog/tags">标签</a><a class="navbar-item" href="/blog/about">关于</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on Gitee" href="https://gitee.com/jingruihe"><i class="fab fa-github"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-6-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2016-01-09T16:00:00.000Z" title="2016/1/10上午12:00:00">2016-01-10</time>发表</span><span class="level-item"><time dateTime="2021-05-12T15:49:01.418Z" title="2021/5/12下午11:49:01">2021-05-12</time>更新</span><span class="level-item"><a class="link-muted" href="/blog/categories/%E5%90%8E%E5%8F%B0/">后台</a></span><span class="level-item">15 分钟读完 (大约2279个字)</span></div></div><h1 class="title is-3 is-size-4-mobile">JPA基础</h1><div class="content"><p>新进了一家公司, 一进去发现里面用的SpringDataJpa. 虽然以前学过hibernate, 但是早就忘了, 还是赶紧学了起来. 感觉spring系列搭配起来感觉很好.<br>开始吧!</p>
+<span id="more"></span>
+
+<h1 id="栗子"><a href="#栗子" class="headerlink" title="栗子"></a>栗子</h1><ol>
+<li><p><code>idea建立项目, new Product -&gt; Spring Initialize -&gt; Next -&gt; 选择Web,JPA,MySQL -&gt; Next....Finish</code></p>
+</li>
+<li><p>配置文件<code>application.properties</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 注意这里连接需要添加编码, 这样生成的表才会默认utf8</span><br><span class="line">spring.datasource.url&#x3D;jdbc:mysql:&#x2F;&#x2F;localhost:3306&#x2F;db_example?useUnicode&#x3D;true&amp;characterEncoding&#x3D;UTF-8&amp;useSSL&#x3D;false</span><br><span class="line">spring.datasource.username&#x3D;root</span><br><span class="line">spring.datasource.password&#x3D;root</span><br><span class="line"># 生成表策略</span><br><span class="line">spring.jpa.properties.hibernate.hbm2ddl.auto&#x3D;update</span><br><span class="line"># 显示sql语句</span><br><span class="line">hibernate.show_sql&#x3D;true</span><br></pre></td></tr></table></figure></li>
+<li><p>DAO –&gt; <code>public interface UserRepository extends JpaRepository&lt;User,Integer&gt;&#123;&#125;</code></p>
+</li>
+<li><p>Entity</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">@Entity</span><br><span class="line">@Table</span><br><span class="line">public class User &#123;</span><br><span class="line"></span><br><span class="line">    @Id</span><br><span class="line">    @GeneratedValue(strategy &#x3D; GenerationType.IDENTITY)</span><br><span class="line">    private Integer id;</span><br><span class="line">    private String name;</span><br><span class="line">    private String email;</span><br><span class="line"></span><br><span class="line">    ...get&#x2F;set</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>运行的时候就会自动在数据库中生成表了.</p>
+</li>
+</ol>
+<blockquote>
+<p>可能生成的表编码不支持utf8, 用的是mysql默认的编码.</p>
+</blockquote>
+<p>建立<code>MySQL5DialectUTF8</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class MySQL5DialectUTF8 extends MySQL5InnoDBDialect &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public String getTableTypeString() &#123;</span><br><span class="line">        return &quot; ENGINE&#x3D;InnoDB DEFAULT CHARSET&#x3D;utf8&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在配置一下<code>spring.jpa.properties.hibernate.dialect=com.example.springdatajpa.MySQL5DialectUTF8</code></p>
+<p>之后直接<code>userRepository.save</code>就是插入或者更新表, <code>delete</code>, <code>find*</code>等等方法.  点进去看方法就好了</p>
+<p>分页<code>PageRequest.of()</code></p>
+<p>排序<code>new Sort(Sort.Direction.DESC,&quot;id&quot;)</code></p>
+<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><h2 id="自动生成表策略"><a href="#自动生成表策略" class="headerlink" title="自动生成表策略"></a>自动生成表策略</h2><ul>
+<li>create 每次加载Hibernate时都会删除上一次生成的表，然后重新生成新表，即使两次没有任何修改也会这样执行，这就导致每次启动都是一个新的数据库，也是导致数据丢失的重要原因</li>
+<li>create-drop 每次加载Hibernate时都会生成表，但当SessionFactory关闭时，所生成的表将自动删除</li>
+<li>update：最常用的属性值，第一次加载Hibernate时创建数据表（前提是需要先有数据库），以后加载HIbernate时只会根据model更新，即使model已经删除了某些属性，数据表也不会随之删除字段</li>
+<li>validate：每次加载Hibernate时都会验证数据表结构，只会和已经存在的数据表进行比较，根据model修改表结构，但不会创建新表</li>
+</ul>
+<h2 id="查询方法策略设置"><a href="#查询方法策略设置" class="headerlink" title="查询方法策略设置"></a>查询方法策略设置</h2><p>通过@EnableJpaRepositories(queryLookupStrategy=<br>QueryLookupStrategy.Key.CREATE_IF_NOT_FOUND)可以配置方法的查询策略，其中QueryLookupStrategy.Key的值一共有三个</p>
+<ul>
+<li>CREATE：直接根据方法名进行创建</li>
+<li>USE_DECLARED_QUERY：声明方式创建,@Query</li>
+<li>CREATE_IF_NOT_FOUND(缺省值), 先找@query,没有再用方法名</li>
+</ul>
+<p>@Query &gt; @NameQuery &gt; 方法定义查询</p>
+<h1 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h1><h2 id="Query查询"><a href="#Query查询" class="headerlink" title="@Query查询"></a><code>@Query</code>查询</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@Query(&quot;select u from User u where u.name &#x3D; ?1&quot;)</span><br><span class="line">User FindByName(String name);</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>?1</code>代表第一个参数</p>
+<p>如果是like查询需要<code>where u.name like %?1</code></p>
+<p>还可以使用原始Sql, <code>@query(value=&quot;select * from users where name=?1&quot;,nativeQuery=true)</code> , 注意<code>nativeQuery</code>不支持<code>Sort</code>参数排序</p>
+<p>原生排序应该这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@query(value&#x3D;&quot;select * from users where name&#x3D;?1 order by ?2&quot;,nativeQuery&#x3D;true)</span><br><span class="line">User FindByName(String name,String sort);</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>@Param</code>用法, 就是参数和名字对应起来, 而不是用顺序来保持</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@query(value&#x3D;&quot;select * from users where name&#x3D;:name order by :sort&quot;,nativeQuery&#x3D;true)</span><br><span class="line">User FindByName(@Param(&quot;name&quot;)String name,@Param(&quot;sort&quot;)String sort);</span><br></pre></td></tr></table></figure>
+
+<p>在Spring Data JPA 1.4以后，支持在@Query中使用SpEL表达式来接收变量(略)</p>
+<p><code>@Modifying</code>作用. 如果配置了一级缓存, 这时候用clearAutomctically=true, 就会刷新hibernate的一级缓存, 不然你在同一接口中更新一个对象, 接着查询这个对象, 查出来的对象就是没有更新之前的状态. 如果删除的时候可以添加这个注解</p>
+<p><code>@Procedure</code>存储过程</p>
+<h2 id="方法名查询"><a href="#方法名查询" class="headerlink" title="方法名查询"></a>方法名查询</h2><blockquote>
+<p>就是说根据定义的一些含义, 根据方法名来查询.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Keyword</th>
+<th>Sample</th>
+<th>JPQL snippet</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>And</code></td>
+<td><code>findByLastnameAndFirstname</code></td>
+<td><code>… where x.lastname = ?1 and x.firstname = ?2</code></td>
+</tr>
+<tr>
+<td><code>Or</code></td>
+<td><code>findByLastnameOrFirstname</code></td>
+<td><code>… where x.lastname = ?1 or x.firstname = ?2</code></td>
+</tr>
+<tr>
+<td><code>Is,Equals</code></td>
+<td><code>findByFirstname,&lt;br /&gt;findByFirstnameIs,&lt;br /&gt;findByFirstnameEquals</code></td>
+<td><code>… where x.firstname = 1?</code></td>
+</tr>
+<tr>
+<td><code>Between</code></td>
+<td><code>findByStartDateBetween</code></td>
+<td><code>… where x.startDate between 1? and ?2</code></td>
+</tr>
+<tr>
+<td><code>LessThan</code></td>
+<td><code>findByAgeLessThan</code></td>
+<td><code>… where x.age &lt; ?1</code></td>
+</tr>
+<tr>
+<td><code>LessThanEqual</code></td>
+<td><code>findByAgeLessThanEqual</code></td>
+<td><code>… where x.age &lt;= ?1</code></td>
+</tr>
+<tr>
+<td><code>GreaterThan</code></td>
+<td><code>findByAgeGreaterThan</code></td>
+<td><code>… where x.age &gt; ?1</code></td>
+</tr>
+<tr>
+<td><code>GreaterThanEqual</code></td>
+<td><code>findByAgeGreaterThanEqual</code></td>
+<td><code>… where x.age &gt;= ?1</code></td>
+</tr>
+<tr>
+<td><code>After</code></td>
+<td><code>findByStartDateAfter</code></td>
+<td><code>… where x.startDate &gt; ?1</code></td>
+</tr>
+<tr>
+<td><code>Before</code></td>
+<td><code>findByStartDateBefore</code></td>
+<td><code>… where x.startDate &lt; ?1</code></td>
+</tr>
+<tr>
+<td><code>IsNull</code></td>
+<td><code>findByAgeIsNull</code></td>
+<td><code>… where x.age is null</code></td>
+</tr>
+<tr>
+<td><code>IsNotNull,NotNull</code></td>
+<td><code>findByAge(Is)NotNull</code></td>
+<td><code>… where x.age not null</code></td>
+</tr>
+<tr>
+<td><code>Like</code></td>
+<td><code>findByFirstnameLike</code></td>
+<td><code>… where x.firstname like ?1</code></td>
+</tr>
+<tr>
+<td><code>NotLike</code></td>
+<td><code>findByFirstnameNotLike</code></td>
+<td><code>… where x.firstname not like ?1</code></td>
+</tr>
+<tr>
+<td><code>StartingWith</code></td>
+<td><code>findByFirstnameStartingWith</code></td>
+<td><code>… where x.firstname like ?1</code> (parameter bound with appended <code>%</code>)</td>
+</tr>
+<tr>
+<td><code>EndingWith</code></td>
+<td><code>findByFirstnameEndingWith</code></td>
+<td><code>… where x.firstname like ?1</code> (parameter bound with prepended <code>%</code>)</td>
+</tr>
+<tr>
+<td><code>Containing</code></td>
+<td><code>findByFirstnameContaining</code></td>
+<td><code>… where x.firstname like ?1</code> (parameter bound wrapped in <code>%</code>)</td>
+</tr>
+<tr>
+<td><code>OrderBy</code></td>
+<td><code>findByAgeOrderByLastnameDesc</code></td>
+<td><code>… where x.age = ?1 order by x.lastname desc</code></td>
+</tr>
+<tr>
+<td><code>Not</code></td>
+<td><code>findByLastnameNot</code></td>
+<td><code>… where x.lastname &lt;&gt; ?1</code></td>
+</tr>
+<tr>
+<td><code>In</code></td>
+<td><code>findByAgeIn(Collection&lt;Age&gt; ages)</code></td>
+<td><code>… where x.age in ?1</code></td>
+</tr>
+<tr>
+<td><code>NotIn</code></td>
+<td><code>findByAgeNotIn(Collection&lt;Age&gt; age)</code></td>
+<td><code>… where x.age not in ?1</code></td>
+</tr>
+<tr>
+<td><code>True</code></td>
+<td><code>findByActiveTrue()</code></td>
+<td><code>… where x.active = true</code></td>
+</tr>
+<tr>
+<td><code>False</code></td>
+<td><code>findByActiveFalse()</code></td>
+<td><code>… where x.active = false</code></td>
+</tr>
+<tr>
+<td><code>IgnoreCase</code></td>
+<td><code>findByFirstnameIgnoreCase</code></td>
+<td><code>… where UPPER(x.firstame) = UPPER(?1)</code></td>
+</tr>
+</tbody></table>
+<p><code>@Async</code> 可以执行异步查询</p>
+<h1 id="实体类的注解"><a href="#实体类的注解" class="headerlink" title="实体类的注解"></a>实体类的注解</h1><h2 id="字段注解"><a href="#字段注解" class="headerlink" title="字段注解"></a>字段注解</h2><ul>
+<li><p>@Entity 实体类</p>
+</li>
+<li><p>@Table 指定数据库表名</p>
+</li>
+<li><p>@Id 主键</p>
+</li>
+</ul>
+<ul>
+<li><p>@GeneratedValue主键生成策略</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">TABLE, 由表模拟序列产生主键, 这个更易于数据库移植</span><br><span class="line">SEQYENCE, 通过序列产生主键, 通过@SequenceGenerator, mysql不支持</span><br><span class="line">IDENTITY, id自增, 一般用于mysql</span><br><span class="line">AUTO, jpa自动选择合适策略,缺省值</span><br></pre></td></tr></table></figure></li>
+<li><p>@Basic 没写注解默认就是这个</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FetchType:EAGER(默认,立即加载),LAZY(延迟加载,大字段用这个)</span><br><span class="line">optional:是否可以为null, 默认true</span><br></pre></td></tr></table></figure></li>
+<li><p>@Transient 代表不在数据库中生成此字段</p>
+</li>
+<li><p>@Column 定义数据库列名</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">name 数据库列名</span><br><span class="line">unique 是否唯一</span><br><span class="line">nullable 是否允许为空</span><br><span class="line">insertable, 插入时是否包含此字段,默认true</span><br><span class="line">updateable, 更新时是否包含此字段,默认true</span><br><span class="line">columnDefinition 数据库中实际类型,如columnDefinition &#x3D; &quot;varchar(128) not null&quot;</span><br><span class="line">length 字段长度</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>@Temporal, date类型属性(TemporalType.DATE, TemporalType.TIME, TemporalType.TIMESTAMP)</p>
+</li>
+<li><p>@Enumerated, 映射enum</p>
+</li>
+<li><p>@Lob 大字段用这个, 加上懒加载. 比如文章内容用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@Lob</span><br><span class="line">@Basic(fetch &#x3D; FetchType.LAZY)</span><br><span class="line">private String content;</span><br></pre></td></tr></table></figure></li>
+<li><p>定义精度</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@Column(precision &#x3D; 0, scale &#x3D; 2)</span><br><span class="line">private BigDecimal price;</span><br></pre></td></tr></table></figure></li>
+<li><p>@Embedded</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;配合@Embeddable使用, 其实使用之后还是生成一张表, 不过包含了BookDetail的所有字段</span><br><span class="line">@Embedded</span><br><span class="line">private BookDetail bookDetail;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@Embeddable</span><br><span class="line">public class BookDetail &#123;</span><br><span class="line"></span><br><span class="line">    private String detail1;</span><br><span class="line">    private String detail2;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>@ElementCollection<br>字符串映射</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;类似一本书有很多感谢人的名单</span><br><span class="line">@ElementCollection</span><br><span class="line">@CollectionTable(name&#x3D;&quot;pk_thanks&quot;) &#x2F;&#x2F;会生成pk_thanks表</span><br><span class="line">@MapKeyColumn(name&#x3D;&quot;pk_thanks_username&quot;) &#x2F;&#x2F;会有一个pk_thanks_username,pk_thanks_phone字段</span><br><span class="line">@Column(name&#x3D;&quot;pk_thanks_phone&quot;) &#x2F;&#x2F; 主键自动生成一个book_id字段, 关联外键为Book表的主键</span><br><span class="line">private Map&lt;String, String&gt; thanksInfo;</span><br></pre></td></tr></table></figure>
+<p>通用目标映射</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;根据属性名生成book_book_chapter表, 主键自动生成一个book_id字段, 关联外键为Book表的主键,其他的都一样</span><br><span class="line">@ElementCollection(targetClass &#x3D; Chapter.class)</span><br><span class="line">private Collection bookChapter &#x3D; new ArrayList();</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@Embeddable</span><br><span class="line">public class Chapter &#123;</span><br><span class="line"></span><br><span class="line">    private String content;</span><br><span class="line">    private String name;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="多表关联"><a href="#多表关联" class="headerlink" title="多表关联"></a>多表关联</h2><p>如果只用OneToOne,其中会自动生成一个外键关联表字段, 默认字段名为外键表名+外键主键名</p>
+<h3 id="JoinColumn"><a href="#JoinColumn" class="headerlink" title="@JoinColumn"></a>@JoinColumn</h3><p>必须配合<code>@OneToOne</code>,<code>@ManyToOne</code>,<code>@OneToMany</code>一起用才有效</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- columnDefinition(可选,&quot;&quot;),JPA 使用最少量 SQL 创建一个数据库表列。</span><br><span class="line">- insertable(可选,true), 默认情况下，JPA 持续性提供程序假设它可以插入到所有表列中。如果该列为只读，请将 insertable 设置为 false。</span><br><span class="line">- name(可选,默认为引用表名+&quot;_&quot;+主键名), 设置外键名</span><br><span class="line">- nullable(可选,true)</span><br><span class="line">- table(可选, 默认引用表名)</span><br><span class="line">- unique(可选,false),</span><br><span class="line">- updatable(可选,true)</span><br></pre></td></tr></table></figure>
+
+<h3 id="OneToOne"><a href="#OneToOne" class="headerlink" title="@OneToOne"></a><code>@OneToOne</code></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">targetEntity: 可选, 关系目标实体, 默认该字段类型</span><br><span class="line">cascade: PERSIST 级联新建; REMOVE; REFRESH; MERGE 级联更新; ALL 全部</span><br><span class="line">fetch: EAGER; LAZY</span><br><span class="line">mappedBy: 关联关系被谁维护, 可选, 一般不需要特别指定.写了这个就代表是关系被维护方. 里面的值指另一方实体里面属性的字段, 而不是数据库字段, 也不是实体对象的名字, 即配置了@JoinColumn或@JoinTable注解属性字段名字.</span><br></pre></td></tr></table></figure>
+
+<p>比如:</p>
+<p>这样只是单项指定</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@Entity</span><br><span class="line">@Table</span><br><span class="line">public class Woman &#123;</span><br><span class="line"></span><br><span class="line">    @Id</span><br><span class="line">    @GeneratedValue</span><br><span class="line">    private Integer id;</span><br><span class="line"></span><br><span class="line">    @OneToOne</span><br><span class="line">    @JoinColumn(name&#x3D;&quot;woman_id&quot;,referencedColumnName&#x3D;&quot;id&quot;)</span><br><span class="line">    private Man man;</span><br><span class="line">    ...get&#x2F;set</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>加上这个就是双向指定,<br>mappedBy意思是放弃关联关系维护并且不能在使用, 此值为Woman中Man的属性值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">@Entity</span><br><span class="line">@Table</span><br><span class="line">public class Man &#123;</span><br><span class="line"></span><br><span class="line">    @Id</span><br><span class="line">    @GeneratedValue</span><br><span class="line">    private Integer id;</span><br><span class="line"></span><br><span class="line">    @OneToOne(mappedBy&#x3D;&quot;man&quot;)</span><br><span class="line">    private Woman woman;</span><br><span class="line">    ...get&#x2F;set</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>生成的表</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE &#96;woman&#96; (</span><br><span class="line">  &#96;id&#96; int(11) NOT NULL,</span><br><span class="line">  &#96;woman_id&#96; int(11) DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (&#96;id&#96;),</span><br><span class="line">  KEY &#96;FKls77cjbm77mxo41kr13ahiwdq&#96; (&#96;woman_id&#96;),</span><br><span class="line">  CONSTRAINT &#96;FKls77cjbm77mxo41kr13ahiwdq&#96; FOREIGN KEY (&#96;woman_id&#96;) REFERENCES &#96;man&#96; (&#96;id&#96;)</span><br><span class="line">) ENGINE&#x3D;InnoDB DEFAULT CHARSET&#x3D;utf8;</span><br><span class="line"></span><br><span class="line">CREATE TABLE &#96;man&#96; (</span><br><span class="line">  &#96;id&#96; int(11) NOT NULL,</span><br><span class="line">  PRIMARY KEY (&#96;id&#96;)</span><br><span class="line">) ENGINE&#x3D;InnoDB DEFAULT CHARSET&#x3D;utf8;</span><br></pre></td></tr></table></figure>
+
+<h2 id="多对一"><a href="#多对一" class="headerlink" title="多对一"></a>多对一</h2><h3 id="单向关联"><a href="#单向关联" class="headerlink" title="单向关联"></a>单向关联</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@Entity</span><br><span class="line">public class Picture &#123;</span><br><span class="line"></span><br><span class="line">    @Id</span><br><span class="line">    @GeneratedValue(strategy &#x3D; GenerationType.IDENTITY)</span><br><span class="line">    private Integer pictureId;</span><br><span class="line"></span><br><span class="line">    private String pictureName;</span><br><span class="line"></span><br><span class="line">    @ManyToOne</span><br><span class="line">    private Category category;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@Entity</span><br><span class="line">public class Category &#123;</span><br><span class="line"></span><br><span class="line">    @Id</span><br><span class="line">    @GeneratedValue(strategy &#x3D; GenerationType.IDENTITY)</span><br><span class="line">    private Integer categoryId;</span><br><span class="line"></span><br><span class="line">    private String categoryName;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>生成的picture表</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE &#96;picture&#96; (</span><br><span class="line">  &#96;picture_id&#96; int(11) NOT NULL AUTO_INCREMENT,</span><br><span class="line">  &#96;picture_name&#96; varchar(255) DEFAULT NULL,</span><br><span class="line">  &#96;category_category_id&#96; int(11) DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (&#96;picture_id&#96;),</span><br><span class="line">  KEY &#96;FKcc24ya5ilyoucwe8p5i56y4d7&#96; (&#96;category_category_id&#96;),</span><br><span class="line">  CONSTRAINT &#96;FKcc24ya5ilyoucwe8p5i56y4d7&#96; FOREIGN KEY (&#96;category_category_id&#96;) REFERENCES &#96;category&#96; (&#96;category_id&#96;)</span><br><span class="line">) ENGINE&#x3D;InnoDB DEFAULT CHARSET&#x3D;utf8mb4</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="双向关联"><a href="#双向关联" class="headerlink" title="双向关联"></a>双向关联</h3><p>Category的Model修改为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@Entity</span><br><span class="line">public class Category &#123;</span><br><span class="line"></span><br><span class="line">    @Id</span><br><span class="line">    @GeneratedValue(strategy &#x3D; GenerationType.IDENTITY)</span><br><span class="line">    private Integer categoryId;</span><br><span class="line"></span><br><span class="line">    private String categoryName;</span><br><span class="line"></span><br><span class="line">    @OneToMany(mappedBy &#x3D; &quot;category&quot;)</span><br><span class="line">    private Set&lt;Picture&gt; pictures;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="OrderBy"><a href="#OrderBy" class="headerlink" title="OrderBy"></a><code>OrderBy</code></h3><p>一般和<code>@OneToMany</code>使用, 比如<code>@OrderBy(&quot;name DESC&quot;)</code></p>
+<h3 id="JoinTable"><a href="#JoinTable" class="headerlink" title="@JoinTable"></a><code>@JoinTable</code></h3><p>如果对象与对象之间有一个关联关系表的时候，就会用到<br><code>@JoinTable</code>，一般和<code>@ManyToMany</code>一起使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">name: 中间关联表名</span><br><span class="line">catalog: 表的catalog</span><br><span class="line">schema</span><br><span class="line">JoinColumn[]: 主链接表的字段</span><br><span class="line">inverseJoinColumns[]: 被关联的表外键字段</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="注意"><a href="#注意" class="headerlink" title="注意:"></a>注意:</h1><ol>
+<li>注解要不全部写在字段上, 要不全部写在get方法上</li>
+<li>Json序列化的时候很容易死循环, 所以很多情况要<code>@JsonIgnore</code></li>
+<li>级联删除注意一下</li>
+<li>表的字段修改要注意. 生产环境很容易丢失数据</li>
+</ol>
+</div><div class="article-licensing box"><div class="licensing-title"><p>JPA基础</p><p><a href="http://jingruihe.gitee.io/blog/2016/01/10/其他-JPA基础/">http://jingruihe.gitee.io/blog/2016/01/10/其他-JPA基础/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>JingRui</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2016-01-10</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2021-05-12</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a class="icon" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a><a class="icon" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/blog/tags/JPA/">JPA</a></div><div class="notification is-danger">You need to set <code>install_url</code> to use ShareThis. Please set it in <code>_config.yml</code>.</div></article></div><div class="card"><div class="card-content"><h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3><div class="buttons is-centered"><a class="button donate" data-type="alipay"><span class="icon is-small"><i class="fab fa-alipay"></i></span><span>支付宝</span><span class="qrcode"><img src="/blog/img/zhifubaopay.png" alt="支付宝"></span></a><a class="button donate" data-type="wechat"><span class="icon is-small"><i class="fab fa-weixin"></i></span><span>微信</span><span class="qrcode"><img src="/blog/img/weixinpay.png" alt="微信"></span></a></div></div></div><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/blog/2017/01/01/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8Fa1-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%B8%83%E5%A4%A7%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">面向对象七大设计原则</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/blog/2015/03/08/%E5%B7%A5%E5%85%B7-6.vi/"><span class="level-item">VI常用操作</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">评论</h3><div class="notification is-danger">You forgot to set the <code>shortname</code> for Disqus. Please set it in <code>_config.yml</code>.</div></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/blog/img/avatar.png" alt="景瑞"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">景瑞</p><p class="is-size-6 is-block">花看半开，酒瘾微醺</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>深圳</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/blog/archives"><p class="title">74</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/blog/categories"><p class="title">1</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/blog/tags"><p class="title">19</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://weibo.com/u/5743551999" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Gitee" href="https://gitee.com/jingruihe"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Weibo" href="https://weibo.com/u/5743551999"><i class="fab fa-weibo"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="RSS" href="/blog/"><i class="fas fa-rss"></i></a></div></div></div><div class="card widget" data-type="links"><div class="card-content"><div class="menu"><h3 class="menu-label">链接</h3><ul class="menu-list"><li><a class="level is-mobile" href="https://0ne0ne.com" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">肉松饼</span></span><span class="level-right"><span class="level-item tag">0ne0ne.com</span></span></a></li><li><a class="level is-mobile" href="http://evilxyz.xyz/" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">神奇的胖子</span></span><span class="level-right"><span class="level-item tag">evilxyz.xyz</span></span></a></li></ul></div></div></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">分类</h3><ul class="menu-list"><li><a class="level is-mobile" href="/blog/categories/%E5%90%8E%E5%8F%B0/"><span class="level-start"><span class="level-item">后台</span></span><span class="level-end"><span class="level-item tag">74</span></span></a></li></ul></div></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">归档</h3><ul class="menu-list"><li><a class="level is-mobile" href="/blog/archives/2021/05/"><span class="level-start"><span class="level-item">五月 2021</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2021/04/"><span class="level-start"><span class="level-item">四月 2021</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2021/01/"><span class="level-start"><span class="level-item">一月 2021</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2020/05/"><span class="level-start"><span class="level-item">五月 2020</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2020/04/"><span class="level-start"><span class="level-item">四月 2020</span></span><span class="level-end"><span class="level-item tag">7</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2020/03/"><span class="level-start"><span class="level-item">三月 2020</span></span><span class="level-end"><span class="level-item tag">4</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2020/02/"><span class="level-start"><span class="level-item">二月 2020</span></span><span class="level-end"><span class="level-item tag">9</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2020/01/"><span class="level-start"><span class="level-item">一月 2020</span></span><span class="level-end"><span class="level-item tag">8</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2019/10/"><span class="level-start"><span class="level-item">十月 2019</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2019/04/"><span class="level-start"><span class="level-item">四月 2019</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2019/03/"><span class="level-start"><span class="level-item">三月 2019</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2019/01/"><span class="level-start"><span class="level-item">一月 2019</span></span><span class="level-end"><span class="level-item tag">4</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2018/02/"><span class="level-start"><span class="level-item">二月 2018</span></span><span class="level-end"><span class="level-item tag">9</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2018/01/"><span class="level-start"><span class="level-item">一月 2018</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2017/01/"><span class="level-start"><span class="level-item">一月 2017</span></span><span class="level-end"><span class="level-item tag">9</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2016/01/"><span class="level-start"><span class="level-item">一月 2016</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2015/03/"><span class="level-start"><span class="level-item">三月 2015</span></span><span class="level-end"><span class="level-item tag">7</span></span></a></li></ul></div></div></div><div class="card widget" data-type="subscribe-email"><div class="card-content"><div class="menu"><h3 class="menu-label">订阅更新</h3><form action="https://feedburner.google.com/fb/a/mailverify" method="post" target="popupwindow" onsubmit="window.open(&#039;https://feedburner.google.com/fb/a/mailverify?uri=&#039;,&#039;popupwindow&#039;,&#039;scrollbars=yes,width=550,height=520&#039;);return true"><input type="hidden" value="" name="uri"><input type="hidden" name="loc" value="en_US"><div class="field has-addons"><div class="control has-icons-left is-expanded"><input class="input" name="email" type="email" placeholder="Email"><span class="icon is-small is-left"><i class="fas fa-envelope"></i></span></div><div class="control"><input class="button" type="submit" value="订阅"></div></div></form></div></div></div><div class="column-right-shadow is-hidden-widescreen is-sticky"></div></div><div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3 is-sticky"><!--!--><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/blog/tags/JPA/"><span class="tag">JPA</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/JVM/"><span class="tag">JVM</span><span class="tag">6</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/docker/"><span class="tag">docker</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/elasticsearch/"><span class="tag">elasticsearch</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/mongodb/"><span class="tag">mongodb</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/mysql/"><span class="tag">mysql</span><span class="tag">12</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/redis/"><span class="tag">redis</span><span class="tag">9</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/spring/"><span class="tag">spring</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/springboot/"><span class="tag">springboot</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/zookeeper/"><span class="tag">zookeeper</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/"><span class="tag">分布式事务</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/"><span class="tag">分布式锁</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/%E5%B7%A5%E5%85%B7/"><span class="tag">工具</span><span class="tag">7</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/%E5%B9%B6%E5%8F%91/"><span class="tag">并发</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/"><span class="tag">消息队列</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/%E6%BA%90%E7%A0%81/"><span class="tag">源码</span><span class="tag">4</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/%E7%AE%97%E6%B3%95/"><span class="tag">算法</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"><span class="tag">解决方案</span><span class="tag">4</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"><span class="tag">设计模式</span><span class="tag">5</span></a></div></div></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2021-05-13T03:35:25.000Z">2021-05-13</time></p><p class="title"><a href="/blog/2021/05/13/mysql-A5.%E6%AD%BB%E9%94%81/">mysql-死锁</a></p><p class="categories"><a href="/blog/categories/%E5%90%8E%E5%8F%B0/">后台</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2021-05-09T03:35:25.000Z">2021-05-09</time></p><p class="title"><a href="/blog/2021/05/09/spring-6.aware/">springAware源码</a></p><p class="categories"><a href="/blog/categories/%E5%90%8E%E5%8F%B0/">后台</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2021-05-07T03:35:25.000Z">2021-05-07</time></p><p class="title"><a href="/blog/2021/05/07/spring-5.event/">spring-Event源码</a></p><p class="categories"><a href="/blog/categories/%E5%90%8E%E5%8F%B0/">后台</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2021-05-04T03:35:25.000Z">2021-05-04</time></p><p class="title"><a href="/blog/2021/05/04/spring-3.aop/">springAOP源码</a></p><p class="categories"><a href="/blog/categories/%E5%90%8E%E5%8F%B0/">后台</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2021-05-01T03:35:25.000Z">2021-05-01</time></p><p class="title"><a href="/blog/2021/05/01/spring-1.IOC/">springIOC源码</a></p><p class="categories"><a href="/blog/categories/%E5%90%8E%E5%8F%B0/">后台</a></p></div></article></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/blog/"><img src="/blog/img/logo.svg" alt="景瑞的博客" height="28"></a><p class="is-size-7"><span>&copy; 2021 JingRui</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on Gitee" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-CN");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/blog/js/column.js"></script><script src="/blog/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/blog/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/blog/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/blog/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/blog/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>

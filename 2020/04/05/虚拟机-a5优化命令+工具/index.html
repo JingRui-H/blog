@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>JVM-优化命令+工具 - 景瑞的博客</title><link rel="manifest" href="/blog/manifest.json"><meta name="application-name" content="景瑞的博客"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="景瑞的博客"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="介绍jvm优化时候到的命令和工具"><meta property="og:type" content="blog"><meta property="og:title" content="JVM-优化命令+工具"><meta property="og:url" content="http://jingruihe.gitee.io/blog/2020/04/05/%E8%99%9A%E6%8B%9F%E6%9C%BA-a5%E4%BC%98%E5%8C%96%E5%91%BD%E4%BB%A4+%E5%B7%A5%E5%85%B7/"><meta property="og:site_name" content="景瑞的博客"><meta property="og:description" content="介绍jvm优化时候到的命令和工具"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://jingruihe.gitee.io/blog/img/og_image.png"><meta property="article:published_time" content="2020-04-04T16:00:00.000Z"><meta property="article:modified_time" content="2021-05-12T15:49:01.426Z"><meta property="article:author" content="JingRui"><meta property="article:tag" content="JVM"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/blog/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://jingruihe.gitee.io/blog/2020/04/05/%E8%99%9A%E6%8B%9F%E6%9C%BA-a5%E4%BC%98%E5%8C%96%E5%91%BD%E4%BB%A4+%E5%B7%A5%E5%85%B7/"},"headline":"JVM-优化命令+工具","image":["http://jingruihe.gitee.io/blog/img/og_image.png"],"datePublished":"2020-04-04T16:00:00.000Z","dateModified":"2021-05-12T15:49:01.426Z","author":{"@type":"Person","name":"JingRui"},"description":"介绍jvm优化时候到的命令和工具"}</script><link rel="canonical" href="http://jingruihe.gitee.io/blog/2020/04/05/%E8%99%9A%E6%8B%9F%E6%9C%BA-a5%E4%BC%98%E5%8C%96%E5%91%BD%E4%BB%A4+%E5%B7%A5%E5%85%B7/"><link rel="icon" href="/blog/img/favicon.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/blog/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><!--!--><!--!--><meta name="generator" content="Hexo 5.4.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/blog/"><img src="/blog/img/logo.svg" alt="景瑞的博客" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/blog/">主页</a><a class="navbar-item" href="/blog/archives">归档</a><a class="navbar-item" href="/blog/categories">分类</a><a class="navbar-item" href="/blog/tags">标签</a><a class="navbar-item" href="/blog/about">关于</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on Gitee" href="https://gitee.com/jingruihe"><i class="fab fa-github"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-6-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2020-04-04T16:00:00.000Z" title="2020/4/5上午12:00:00">2020-04-05</time>发表</span><span class="level-item"><time dateTime="2021-05-12T15:49:01.426Z" title="2021/5/12下午11:49:01">2021-05-12</time>更新</span><span class="level-item"><a class="link-muted" href="/blog/categories/%E5%90%8E%E5%8F%B0/">后台</a></span><span class="level-item">16 分钟读完 (大约2383个字)</span></div></div><h1 class="title is-3 is-size-4-mobile">JVM-优化命令+工具</h1><div class="content"><p>介绍jvm优化时候到的命令和工具</p>
+<span id="more"></span>
+
+<h1 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h1><h2 id="Jps"><a href="#Jps" class="headerlink" title="Jps"></a>Jps</h2><p>JVM Process Status Tool,显示指定系统内所有的HotSpot虚拟机进程。</p>
+<p>格式 <code>jps [options] [hostid]</code> </p>
+<p>其中[option]、[hostid]参数也可以不写</p>
+<h3 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h3><p>option参数</p>
+<ul>
+<li>l : 输出主类全名或jar路径  long</li>
+<li>q : 只输出LVMID  quit</li>
+<li>m : 输出JVM启动时传递给main()的参数</li>
+<li>v : 输出JVM启动时显示指定的JVM参数</li>
+</ul>
+<h2 id="Jstat"><a href="#Jstat" class="headerlink" title="Jstat"></a>Jstat</h2><p>jstat(JVM statistics Monitoring)是用于监视虚拟机运行时状态信息的命令，它可以显示出虚拟机进程中的类装载、内存、垃圾收集、JIT编译等运行数据。<strong>没有GUI界面，是检测垃圾回收和内存泄露首选工具</strong></p>
+<p>格式 <code>jstat [option] [-t] [-h&lt;lines&gt;] LVMID [interval] [count]</code></p>
+<ul>
+<li>[option] : 操作参数</li>
+<li>[-t]：程序执行的总时间</li>
+<li>[-h<lines>]： 每隔几次打印出现一次表头， 比如<code>-h10</code>就是打印10行之后出现一个表头</li>
+<li>LVMID : 本地虚拟机进程ID</li>
+<li>[interval] : 连续输出的时间间隔，默认只打印一次</li>
+<li>[count] : 连续输出的次数</li>
+</ul>
+<p>下面介绍<code>option</code>参数</p>
+<h3 id="class"><a href="#class" class="headerlink" title="class"></a>class</h3><p>class loader的行为统计, 监视类装载、卸载数量、总空间以及耗费的时间</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@iZwz9b4zp8flndh7pb8o0qZ &#x2F;]# jstat -class 11752</span><br><span class="line">Loaded  Bytes  Unloaded  Bytes     Time   </span><br><span class="line">14074 26039.7      288   364.1      32.75</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Loaded : 加载class的数量</li>
+<li>Bytes : class字节大小</li>
+<li>Unloaded : 未加载class的数量</li>
+<li>Bytes : 未加载class的字节大小</li>
+<li>Time : 加载时间</li>
+</ul>
+<h3 id="垃圾回收相关"><a href="#垃圾回收相关" class="headerlink" title="垃圾回收相关"></a>垃圾回收相关</h3><p><strong>-gc</strong></p>
+<p>垃圾回收堆的行为统计</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@iZwz9b4zp8flndh7pb8o0qZ &#x2F;]# jstat -gc 30593</span><br><span class="line"> S0C    S1C    S0U    S1U      EC       EU        OC         OU       MC     MU    CCSC   CCSU   YGC     YGCT    FGC    FGCT     GCT   </span><br><span class="line">512.0  512.0  160.0   0.0   459776.0 174477.1  464384.0   393415.3  149248.0 138211.8 14848.0 13429.1 244930 1560.761  98     52.611 1613.372</span><br></pre></td></tr></table></figure>
+<p>C即Capacity 总容量，U即Used 已使用的容量</p>
+<ul>
+<li>S0C : survivor0区的总容量</li>
+<li>S1C : survivor1区的总容量</li>
+<li>S0U : survivor0区已使用的容量</li>
+<li>S1U : survivor1区已使用的容量</li>
+<li>EC : Eden区的总容量</li>
+<li>EU : Eden区已使用的容量</li>
+<li>OC : Old区的总容量</li>
+<li>OU : Old区已使用的容量(如果这个一直再涨，可能就是因为内存泄露)</li>
+<li>PC    当前perm的容量 (KB)</li>
+<li>PU    perm的使用 (KB)</li>
+<li>MC：方法区大小</li>
+<li>MU：方法区使用大小</li>
+<li>CCSC:压缩类空间大小</li>
+<li>CCSU:压缩类空间使用大小</li>
+<li>YGC : 新生代垃圾回收次数</li>
+<li>YGCT : 新生代垃圾回收时间</li>
+<li>FGC : 老年代垃圾回收次数</li>
+<li>FGCT : 老年代垃圾回收时间</li>
+<li>GCT : 垃圾回收总消耗时间</li>
+</ul>
+<p><code>jstat -gc 30593 2000 20</code> 每隔2000ms输出1262的gc情况，一共输出20次</p>
+<p><strong>-gccapacity</strong><br>同-gc，不过还会输出Java堆各区域使用到的最大、最小空间</p>
+<ul>
+<li>NGCMN : 新生代占用的最小空间</li>
+<li>NGCMX : 新生代占用的最大空间</li>
+<li>OGCMN : 老年代占用的最小空间</li>
+<li>OGCMX : 老年代占用的最大空间</li>
+<li>OGC：当前年老代的容量 (KB)</li>
+<li>OC：当前年老代的空间 (KB)</li>
+<li>PGCMN : perm占用的最小空间</li>
+<li>PGCMX : perm占用的最大空间</li>
+</ul>
+<p><strong>-gcutil</strong><br>垃圾回收统计概述. 同-gc，不过输出的是已使用空间占总空间的百分比</p>
+<p><strong>-gccause</strong><br>垃圾收集统计概述（同-gcutil），附加最近两次垃圾回收事件的原因</p>
+<ul>
+<li>LGCC：最近垃圾回收的原因</li>
+<li>GCC：当前垃圾回收的原因</li>
+</ul>
+<p><strong>-gcnew</strong><br>新生代行为统计</p>
+<ul>
+<li>TT：Tenuring threshold(提升阈值)</li>
+<li>MTT：最大的tenuring threshold</li>
+<li>DSS：survivor区域大小 (KB)</li>
+</ul>
+<p><strong>-gcnewcapacity</strong><br>新生代与其相应的内存空间的统计</p>
+<ul>
+<li>NGC:当前年轻代的容量 (KB)</li>
+<li>S0CMX:最大的S0空间 (KB)</li>
+<li>S0C:当前S0空间 (KB)</li>
+<li>ECMX:最大eden空间 (KB)</li>
+<li>EC:当前eden空间 (KB)</li>
+</ul>
+<p><strong>-gcold</strong><br>显示老年代GC状况</p>
+<p><strong>-gcoldcapacity</strong><br>显示老年代GC状况，主要关注使用到最大、最小空间</p>
+<p><strong>-gcpermcapacity</strong><br>显示永久代使用到的最大、最小空间</p>
+<h3 id="JIT相关"><a href="#JIT相关" class="headerlink" title="JIT相关"></a>JIT相关</h3><p><strong>-compiler</strong></p>
+<p>HotSpt JIT编译器行为统计, 输出JIT编译过的方法数量耗时等</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@iZwz9b4zp8flndh7pb8o0qZ &#x2F;]# jstat -compiler 30593</span><br><span class="line">Compiled Failed Invalid   Time   FailedType FailedMethod</span><br><span class="line">   43948      5       0   299.39          1 org&#x2F;eclipse&#x2F;jdt&#x2F;internal&#x2F;compiler&#x2F;lookup&#x2F;ReferenceBinding computeId</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Compiled : 编译数量</li>
+<li>Failed : 编译失败数量</li>
+<li>Invalid : 无效数量</li>
+<li>Time : 编译耗时</li>
+<li>FailedType : 失败类型</li>
+<li>FailedMethod : 失败方法的全限定名</li>
+</ul>
+<p><strong>-printcompilation</strong><br>HotSpot编译方法统计</p>
+<ul>
+<li>Compiled：被执行的编译任务的数量</li>
+<li>Size：方法字节码的字节数</li>
+<li>Type：编译类型</li>
+<li>Method：编译方法的类名和方法名。类名使用”/” 代替 “.” 作为空间分隔符. 方法名是给出类的方法名. 格式是一致于HotSpot - XX:+PrintComplation 选项</li>
+</ul>
+<h2 id="Jinfo"><a href="#Jinfo" class="headerlink" title="Jinfo"></a>Jinfo</h2><p>jinfo(JVM Configuration info)这个命令作用是实时查看和调整虚拟机运行参数。 之前的<code>jps -v</code>口令只能查看到显示指定的参数，如果想要查看未被显示指定的参数的值就要使用<code>jinfo</code>口令</p>
+<p>格式<code>jinfo [option] [args] LVMID</code></p>
+<p>option参数</p>
+<ul>
+<li>-flag : 输出指定args参数的值</li>
+<li>-flags : 不需要args参数，输出所有JVM参数的值</li>
+<li>-sysprops : 输出系统属性，等同于System.getProperties()</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">λ jinfo -flag UseG1GC 21568</span><br><span class="line">-XX:-UseG1GC  &#x2F;&#x2F;-表示不使用</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;查看PrintGCDetails没有使用</span><br><span class="line">C:\cmder</span><br><span class="line">λ jinfo -flag PrintGCDetails 21568</span><br><span class="line">-XX:-PrintGCDetails</span><br><span class="line">&#x2F;&#x2F;设置PrintGCDetails，注意重启后失效，而且设置的参数非常有限</span><br><span class="line">C:\cmder</span><br><span class="line">λ jinfo -flag +PrintGCDetails 21568</span><br><span class="line">&#x2F;&#x2F;查看PrintGCDetails已经被使用</span><br><span class="line">C:\cmder</span><br><span class="line">λ jinfo -flag PrintGCDetails 21568</span><br><span class="line">-XX:+PrintGCDetails</span><br></pre></td></tr></table></figure>
+
+<h2 id="Jmap"><a href="#Jmap" class="headerlink" title="Jmap"></a>Jmap</h2><p>jmap(JVM Memory Map)命令用于生成heap dump文件，如果不使用这个命令，还阔以使用-XX:+HeapDumpOnOutOfMemoryError参数来让虚拟机出现OOM的时候·自动生成dump文件。 jmap不仅能生成dump文件，还阔以查询finalize执行队列、Java堆和永久代的详细信息，如当前使用率、当前使用的是哪种收集器等。</p>
+<p>格式<code>jmap [option] LVMID</code></p>
+<p>option参数</p>
+<ul>
+<li>dump : 生成堆转储快照</li>
+<li>finalizerinfo : 显示在F-Queue队列等待Finalizer线程执行finalizer方法的对象</li>
+<li>heap : 显示Java堆详细信息</li>
+<li>histo : 显示堆中对象的统计信息</li>
+<li>permstat : to print permanent generation statistics</li>
+<li>F : 当-dump没有响应时，强制生成dump快照</li>
+</ul>
+<h3 id="导出内存映像文件"><a href="#导出内存映像文件" class="headerlink" title="导出内存映像文件"></a>导出内存映像文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;手动</span><br><span class="line">&#x2F;&#x2F;全部对象</span><br><span class="line">jmap -dump:format&#x3D;b,file&#x3D;1.hprof &lt;pid&gt;</span><br><span class="line">&#x2F;&#x2F;只保存存活对象,生产一般用这个</span><br><span class="line">jmap -dump:live,format&#x3D;b,file&#x3D;1.hprof &lt;pid&gt;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;自动</span><br><span class="line">-XX:+HeapDumpOnOutOfMemoryError &#x2F;&#x2F;oom之前调用</span><br><span class="line">-XX:+HeapDumpBeforeFullGC  &#x2F;&#x2F;fullGC之前调用</span><br><span class="line">-XX:HeapDumpPath&#x3D;C:\m.hprof &#x2F;&#x2F;指定路径</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="内存使用情况"><a href="#内存使用情况" class="headerlink" title="内存使用情况"></a>内存使用情况</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;展示某个时间点内存占用</span><br><span class="line">jmap -heap &lt;pid&gt; &gt; c:\a.txt </span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;内存中有什么对象，占用字节数多少</span><br><span class="line">jmap -histo &lt;pid&gt; &gt; c:\b.txt</span><br></pre></td></tr></table></figure>
+
+<h2 id="Jhat"><a href="#Jhat" class="headerlink" title="Jhat"></a>Jhat</h2><p>分析dump，jdk9之后去删掉了，官方推荐<code>jvisualvm</code></p>
+<h2 id="Jstack"><a href="#Jstack" class="headerlink" title="Jstack"></a>Jstack</h2><p>jstack用于生成java虚拟机当前时刻的线程快照。</p>
+<p>线程快照是当前java虚拟机内每一条线程正在执行的方法堆栈的集合，生成线程快照的主要目的是<strong>定位线程出现长时间停顿的原因</strong>，如线程间死锁、死循环、请求外部资源导致的长时间等待等。 </p>
+<p>线程出现停顿的时候通过jstack来查看各个线程的调用堆栈，就可以知道没有响应的线程到底在后台做什么事情，或者等待什么资源。 如果java程序崩溃生成core文件，jstack工具可以用来获得core文件的java stack和native stack的信息，从而可以轻松地知道java程序是如何崩溃和在程序何处发生问题。另外，jstack工具还可以附属到正在运行的java程序中，看到当时运行的java程序的java stack和native stack的信息, 如果现在运行的java程序呈现hung的状态，jstack是非常有用的。</p>
+<p>格式<code>jstack [option] LVMID</code></p>
+<p>option参数</p>
+<ul>
+<li>-F : 当正常输出请求不被响应时，强制输出线程堆栈</li>
+<li>-l : 除堆栈外，显示关于锁的附加信息</li>
+<li>-m : 如果调用到本地方法的话，可以显示C/C++的堆栈</li>
+</ul>
+<h2 id="Jcmd"><a href="#Jcmd" class="headerlink" title="Jcmd"></a>Jcmd</h2><p>除了前面<code>jstat</code>之外所有功能，官方建议替换</p>
+<h1 id="GUI"><a href="#GUI" class="headerlink" title="GUI"></a>GUI</h1><h2 id="java自带"><a href="#java自带" class="headerlink" title="java自带"></a>java自带</h2><h3 id="Jconsole"><a href="#Jconsole" class="headerlink" title="Jconsole"></a>Jconsole</h3><h3 id="VisualVM（自带推荐）"><a href="#VisualVM（自带推荐）" class="headerlink" title="VisualVM（自带推荐）"></a>VisualVM（自带推荐）</h3><p>安装插件VisualGC</p>
+<h3 id="JMC"><a href="#JMC" class="headerlink" title="JMC"></a>JMC</h3><h2 id="第三方工具"><a href="#第三方工具" class="headerlink" title="第三方工具"></a>第三方工具</h2><h3 id="MAT（专门分析dump）"><a href="#MAT（专门分析dump）" class="headerlink" title="MAT（专门分析dump）"></a>MAT（专门分析dump）</h3><p>最吸引人的还是可以快速生成内存泄漏报表</p>
+<h3 id="JProfiler"><a href="#JProfiler" class="headerlink" title="JProfiler"></a>JProfiler</h3><h3 id="Arthas"><a href="#Arthas" class="headerlink" title="Arthas"></a>Arthas</h3><h3 id="Btrace"><a href="#Btrace" class="headerlink" title="Btrace"></a>Btrace</h3><h1 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h1><ol>
+<li>静态集合类<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;静态集合类生命周期很长，在方法中add对象进入之后回收不了</span><br><span class="line">static List list &#x3D; new ArrayList();</span><br><span class="line"></span><br><span class="line">public void test()&#123;</span><br><span class="line">    Object obj &#x3D; new Object();</span><br><span class="line">    list.add(obj);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>单例模式，持有外部引用就不会被回收</li>
+<li>内部类持有外部类，如果外部类实例对象返回了一个内部类实例。这时候如果内部类实例周期很长，外部类也回收不了</li>
+<li>各种连接，比如数据库close等</li>
+<li>变量不合理作用域。可以局部变量就不要去成员变量</li>
+<li>改变哈希值。当一个对象被存储到hashSet中，就不能修改这个对象中参与计算的字段。因为存进去了之后修改了参与计算的字段，hash就变了。对象就取不出来了。</li>
+<li>缓存，一旦把对象放入缓存就很容易被遗忘。所以建议用弱引用WeakHashMap实现</li>
+<li>回调，如果在api中注册回调但是没有显示取消，那么就会聚集。建议使用弱引用WeakHashMap实现</li>
+<li>出栈的时候记得把值设置为null</li>
+</ol>
+</div><div class="article-licensing box"><div class="licensing-title"><p>JVM-优化命令+工具</p><p><a href="http://jingruihe.gitee.io/blog/2020/04/05/虚拟机-a5优化命令+工具/">http://jingruihe.gitee.io/blog/2020/04/05/虚拟机-a5优化命令+工具/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>JingRui</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2020-04-05</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2021-05-12</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a class="icon" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a><a class="icon" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/blog/tags/JVM/">JVM</a></div><div class="notification is-danger">You need to set <code>install_url</code> to use ShareThis. Please set it in <code>_config.yml</code>.</div></article></div><div class="card"><div class="card-content"><h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3><div class="buttons is-centered"><a class="button donate" data-type="alipay"><span class="icon is-small"><i class="fab fa-alipay"></i></span><span>支付宝</span><span class="qrcode"><img src="/blog/img/zhifubaopay.png" alt="支付宝"></span></a><a class="button donate" data-type="wechat"><span class="icon is-small"><i class="fab fa-weixin"></i></span><span>微信</span><span class="qrcode"><img src="/blog/img/weixinpay.png" alt="微信"></span></a></div></div></div><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/blog/2020/04/06/%E8%99%9A%E6%8B%9F%E6%9C%BA-a6%E8%BF%90%E8%A1%8C%E6%97%B6%E5%8F%82%E6%95%B0/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">JVM-运行时参数</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/blog/2020/04/04/%E8%99%9A%E6%8B%9F%E6%9C%BA-a4%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/"><span class="level-item">JVM-垃圾回收</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">评论</h3><div class="notification is-danger">You forgot to set the <code>shortname</code> for Disqus. Please set it in <code>_config.yml</code>.</div></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/blog/img/avatar.png" alt="景瑞"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">景瑞</p><p class="is-size-6 is-block">花看半开，酒瘾微醺</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>深圳</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/blog/archives"><p class="title">74</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/blog/categories"><p class="title">1</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/blog/tags"><p class="title">19</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://weibo.com/u/5743551999" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Gitee" href="https://gitee.com/jingruihe"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Weibo" href="https://weibo.com/u/5743551999"><i class="fab fa-weibo"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="RSS" href="/blog/"><i class="fas fa-rss"></i></a></div></div></div><div class="card widget" data-type="links"><div class="card-content"><div class="menu"><h3 class="menu-label">链接</h3><ul class="menu-list"><li><a class="level is-mobile" href="https://0ne0ne.com" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">肉松饼</span></span><span class="level-right"><span class="level-item tag">0ne0ne.com</span></span></a></li><li><a class="level is-mobile" href="http://evilxyz.xyz/" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">神奇的胖子</span></span><span class="level-right"><span class="level-item tag">evilxyz.xyz</span></span></a></li></ul></div></div></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">分类</h3><ul class="menu-list"><li><a class="level is-mobile" href="/blog/categories/%E5%90%8E%E5%8F%B0/"><span class="level-start"><span class="level-item">后台</span></span><span class="level-end"><span class="level-item tag">74</span></span></a></li></ul></div></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">归档</h3><ul class="menu-list"><li><a class="level is-mobile" href="/blog/archives/2021/05/"><span class="level-start"><span class="level-item">五月 2021</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2021/04/"><span class="level-start"><span class="level-item">四月 2021</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2021/01/"><span class="level-start"><span class="level-item">一月 2021</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2020/05/"><span class="level-start"><span class="level-item">五月 2020</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2020/04/"><span class="level-start"><span class="level-item">四月 2020</span></span><span class="level-end"><span class="level-item tag">7</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2020/03/"><span class="level-start"><span class="level-item">三月 2020</span></span><span class="level-end"><span class="level-item tag">4</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2020/02/"><span class="level-start"><span class="level-item">二月 2020</span></span><span class="level-end"><span class="level-item tag">9</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2020/01/"><span class="level-start"><span class="level-item">一月 2020</span></span><span class="level-end"><span class="level-item tag">8</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2019/10/"><span class="level-start"><span class="level-item">十月 2019</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2019/04/"><span class="level-start"><span class="level-item">四月 2019</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2019/03/"><span class="level-start"><span class="level-item">三月 2019</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2019/01/"><span class="level-start"><span class="level-item">一月 2019</span></span><span class="level-end"><span class="level-item tag">4</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2018/02/"><span class="level-start"><span class="level-item">二月 2018</span></span><span class="level-end"><span class="level-item tag">9</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2018/01/"><span class="level-start"><span class="level-item">一月 2018</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2017/01/"><span class="level-start"><span class="level-item">一月 2017</span></span><span class="level-end"><span class="level-item tag">9</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2016/01/"><span class="level-start"><span class="level-item">一月 2016</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/archives/2015/03/"><span class="level-start"><span class="level-item">三月 2015</span></span><span class="level-end"><span class="level-item tag">7</span></span></a></li></ul></div></div></div><div class="card widget" data-type="subscribe-email"><div class="card-content"><div class="menu"><h3 class="menu-label">订阅更新</h3><form action="https://feedburner.google.com/fb/a/mailverify" method="post" target="popupwindow" onsubmit="window.open(&#039;https://feedburner.google.com/fb/a/mailverify?uri=&#039;,&#039;popupwindow&#039;,&#039;scrollbars=yes,width=550,height=520&#039;);return true"><input type="hidden" value="" name="uri"><input type="hidden" name="loc" value="en_US"><div class="field has-addons"><div class="control has-icons-left is-expanded"><input class="input" name="email" type="email" placeholder="Email"><span class="icon is-small is-left"><i class="fas fa-envelope"></i></span></div><div class="control"><input class="button" type="submit" value="订阅"></div></div></form></div></div></div><div class="column-right-shadow is-hidden-widescreen is-sticky"></div></div><div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3 is-sticky"><!--!--><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/blog/tags/JPA/"><span class="tag">JPA</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/JVM/"><span class="tag">JVM</span><span class="tag">6</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/docker/"><span class="tag">docker</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/elasticsearch/"><span class="tag">elasticsearch</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/mongodb/"><span class="tag">mongodb</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/mysql/"><span class="tag">mysql</span><span class="tag">12</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/redis/"><span class="tag">redis</span><span class="tag">9</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/spring/"><span class="tag">spring</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/springboot/"><span class="tag">springboot</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/zookeeper/"><span class="tag">zookeeper</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/"><span class="tag">分布式事务</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/"><span class="tag">分布式锁</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/%E5%B7%A5%E5%85%B7/"><span class="tag">工具</span><span class="tag">7</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/%E5%B9%B6%E5%8F%91/"><span class="tag">并发</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/"><span class="tag">消息队列</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/%E6%BA%90%E7%A0%81/"><span class="tag">源码</span><span class="tag">4</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/%E7%AE%97%E6%B3%95/"><span class="tag">算法</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"><span class="tag">解决方案</span><span class="tag">4</span></a></div><div class="control"><a class="tags has-addons" href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"><span class="tag">设计模式</span><span class="tag">5</span></a></div></div></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2021-05-13T03:35:25.000Z">2021-05-13</time></p><p class="title"><a href="/blog/2021/05/13/mysql-A5.%E6%AD%BB%E9%94%81/">mysql-死锁</a></p><p class="categories"><a href="/blog/categories/%E5%90%8E%E5%8F%B0/">后台</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2021-05-09T03:35:25.000Z">2021-05-09</time></p><p class="title"><a href="/blog/2021/05/09/spring-6.aware/">springAware源码</a></p><p class="categories"><a href="/blog/categories/%E5%90%8E%E5%8F%B0/">后台</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2021-05-07T03:35:25.000Z">2021-05-07</time></p><p class="title"><a href="/blog/2021/05/07/spring-5.event/">spring-Event源码</a></p><p class="categories"><a href="/blog/categories/%E5%90%8E%E5%8F%B0/">后台</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2021-05-04T03:35:25.000Z">2021-05-04</time></p><p class="title"><a href="/blog/2021/05/04/spring-3.aop/">springAOP源码</a></p><p class="categories"><a href="/blog/categories/%E5%90%8E%E5%8F%B0/">后台</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2021-05-01T03:35:25.000Z">2021-05-01</time></p><p class="title"><a href="/blog/2021/05/01/spring-1.IOC/">springIOC源码</a></p><p class="categories"><a href="/blog/categories/%E5%90%8E%E5%8F%B0/">后台</a></p></div></article></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/blog/"><img src="/blog/img/logo.svg" alt="景瑞的博客" height="28"></a><p class="is-size-7"><span>&copy; 2021 JingRui</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on Gitee" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-CN");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/blog/js/column.js"></script><script src="/blog/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/blog/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/blog/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/blog/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/blog/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>
